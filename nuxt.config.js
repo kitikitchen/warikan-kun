@@ -48,10 +48,14 @@ export default {
       '~/assets/scss/_setting.scss',
       '~/assets/scss/_function.scss',
       '~/assets/scss/_mixin.scss',
-      '~/assets/scss/_reset.scss',
-      '~/assets/scss/_base.scss'
+
     ]
   },
+
+  css: [
+    { src: '~/assets/scss/_reset.scss', lang: 'scss' },
+    { src: '~/assets/scss/_base.scss', lang: 'scss' }
+  ],
 
   // vuetify: {
   //   // Vuetify の設定はここに書く

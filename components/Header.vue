@@ -1,7 +1,7 @@
 <template>
-  <header>
-    <p class="title">割り勘<span>くん</span></p>
-    <h1 v-ripple class="title">warikan-kun</h1>
+  <header class="title">
+    <h1>割り勘<span>くん</span></h1>
+    <small>warikan-kun</small>
   </header>
 </template>
 
@@ -37,6 +37,5 @@
       content: "：LG";
     }
   }
-
 }
 </style>
