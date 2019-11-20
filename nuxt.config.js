@@ -39,7 +39,29 @@ export default {
   ** Nuxt.js modules
   */
   modules: [
+    // '@nuxtjs/vuetify'
+    '@nuxtjs/style-resources',
   ],
+
+  styleResources: {
+    scss: [
+      '~/assets/scss/_setting.scss',
+      '~/assets/scss/_function.scss',
+      '~/assets/scss/_mixin.scss',
+      '~/assets/scss/_reset.scss',
+      '~/assets/scss/_base.scss'
+    ]
+  },
+
+  // vuetify: {
+  //   // Vuetify の設定はここに書く
+  //   theme: {
+  //     primary: '#3f51b5',
+  //     secondary: '#b0bec5',
+  //     accent: '#8c9eff',
+  //     error: '#b71c1c'
+  //   }
+  // },
 
   /*
   ** Build configuration
