@@ -6,6 +6,6 @@
 
 <style lang="scss" scoped>
 div {
-  padding: vw(40);
+  // padding: vw(40);
 }
 </style>

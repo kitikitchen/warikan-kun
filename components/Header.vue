@@ -1,6 +1,6 @@
 <template>
-  <header class="title">
-    <h1>割り勘<span>くん</span></h1>
+  <header class="header">
+    <h1 class="title"><img src="@/static/logo.svg" alt=""><span>割り勘<span class="small">くん</span></span></h1>
   </header>
 </template>
 
@@ -8,16 +8,25 @@
 .title {
   font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
     'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-weight: 600;
   font-size: 20px;
-  color: #35495e;
+  color: $color-red;
+  line-height: 1;
   letter-spacing: 1px;
+  text-align: center;
+  font-size: 36px;
 
-  span {
-    font-size: 0.7em;
+  img {
+    width: 44px;
+    margin-right: 10px;
   }
 
+  .small {
+    font-size: 0.7em;
+  }
   // @include breakpoint-up(sm) {
   //   background: turquoise;
   //   &::after {
