@@ -15,7 +15,7 @@
         <div class="bottons">
           <div class="peoples"><button type="button" @click="addPeoples(); checkInput();">＋</button><span>{{peoples.length}} 人</span><button type="button" @click="removePeoples(); checkInput();">−</button></div>
           <div class="button">
-            <button type="button" @click="calc">計算する</button>
+            <button type="button" @click="calc" :disabled="!this.peoples.length"><span v-show="calc_flg">再</span>計算する</button>
           </div>
         </div>
       </div>
@@ -33,10 +33,10 @@
           <tbody>
             <tr class="table_item" v-for="people in peoples" v-bind:key="people.id">
               <td class="delete"><button type="button" @click="removePeople(people.id); checkInput();">❌</button></td>
-              <td class="name"><input type="text" v-model="people.name"></td>
-              <td class="ratio"><button type="button" @click="changeRatio(people.id, 'plus'); checkInput();" :disabled="people.fixed">＋</button><input type="number" v-model="people.ratio" :disabled="people.fixed"><button type="button" @click="changeRatio(people.id, 'minus'); checkInput();" :disabled="people.fixed">−</button></td>
-              <td class="price"><input type="number" v-model="people.price" @input="checkInput();" :disabled="people.fixed"></td>
-              <td class="fixed"><input type="checkbox" v-model="people.fixed" @click="switchFixed(people.id);"></td>
+              <td class="name"><input type="text" v-model="people.name" tabindex="1"></td>
+              <td class="ratio"><button type="button" @click="changeRatio(people.id, 'plus'); checkInput();" :disabled="people.fixed">＋</button><span>{{people.ratio}}</span><button type="button" @click="changeRatio(people.id, 'minus'); checkInput();" :disabled="people.fixed">−</button></td>
+              <td class="price"><input type="number" v-model="people.price" @input="checkInput();" :disabled="people.fixed" tabindex="2"></td>
+              <td class="fixed"><input type="checkbox" v-model="people.fixed" @click="switchFixed(people.id);" tabindex="2"></td>
             </tr>
           </tbody>
         </table>
@@ -54,7 +54,7 @@
     },
     data: function() {
       return {
-        total_price: 10000,
+        total_price: null,
         people_num: 2,
         remainder: 0,
         peoples: [],
@@ -63,11 +63,11 @@
         recalc_flg: false,
       };
     },
-    computed: {
-      aaa: function() {
 
-      }
+    created: function(){
+      this.addPeoples();
     },
+
     methods: {
       calc: function() {
         let num = this.peoples.length;
@@ -118,6 +118,11 @@
 
       removePeoples: function() {
         this.peoples.shift();
+
+        if (!this.peoples.length) {
+          this.calc_flg = false;
+          this.recalc_flg = false;
+        }
       },
 
       removePeople: function(id) {
@@ -177,7 +182,7 @@
 }
 
 .header {
-  padding: 20px vw(40);
+  padding: 100px vw(40) 40px;
   transition: ease 0.5s;
 
   .calc & {
@@ -196,11 +201,11 @@
   line-height: 1;
   letter-spacing: 1px;
   text-align: center;
-  font-size: 36px;
+  font-size: 40px;
   transition: ease 0.5s;
 
   img {
-    width: 44px;
+    width: 40px;
     margin-right: 10px;
     transition: ease 0.5s;
   }
@@ -222,6 +227,7 @@
 
 .read {
   text-align: center;
+  margin-bottom: 10px;
   // padding: 20px 0;
   transition: margin ease 0.5s;
 
@@ -315,10 +321,16 @@
   .recalc & {
     background: $color-red-light;
   }
+
+  .button button {
+    &[disabled] {
+      background: $color-gray;
+    }
+  }
 }
 
 .peoples {
-  margin-top: 10px;
+  margin-top: 0px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -342,7 +354,7 @@
 }
 
 .button {
-  margin-top: 20px;
+  margin-top: 30px;
   // display: flex;
   text-align: center;
 
@@ -351,15 +363,22 @@
     margin: auto;
     background: $color-green;
     color: $color-white;
-    width: 100%;
+    width: 80%;
     padding: 5px 30px;
+    font-weight: bold;
+
+    font-size: 20px;
 
     .calc & {
+      width: 100%;
       background: $color-gray;
+      font-size: 16px;
     }
 
     .recalc & {
+      width: 100%;
       background: $color-green;
+      font-size: 16px;
     }
   }
 
@@ -404,7 +423,7 @@ input {
 }
 
 .ratio {
-  width: 17%;
+  width: 2%;
 
   .table_item & {
     width: 100%;
@@ -416,10 +435,20 @@ input {
       color: $color-gray;
     }
   }
+
+  span {
+    width: 40px;
+    padding: 2px 5px;
+    border: 2px solid $color-gray-light;
+  }
 }
 
 .price {
   width: 20%;
+
+  input {
+    text-align: right;
+  }
 }
 
 .table_item {
