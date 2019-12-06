@@ -34,7 +34,7 @@
             <tr class="table_item" v-for="people in peoples" v-bind:key="people.id">
               <td class="delete"><button type="button" @click="removePeople(people.id); checkInput();">❌</button></td>
               <td class="name"><input type="text" v-model="people.name" tabindex="1"></td>
-              <td class="ratio"><button type="button" @click="changeRatio(people.id, 'plus'); checkInput();" :disabled="people.fixed">＋</button><span>{{people.ratio}}</span><button type="button" @click="changeRatio(people.id, 'minus'); checkInput();" :disabled="people.fixed">−</button></td>
+              <td class="ratio"><button type="button" @click="changeRatio(people.id, 'plus');" :disabled="people.fixed">＋</button><span>{{people.ratio}}</span><button type="button" @click="changeRatio(people.id, 'minus');" :disabled="people.fixed">−</button></td>
               <td class="price"><input type="number" v-model="people.price" @input="checkInput();" :disabled="people.fixed" tabindex="2"></td>
               <td class="fixed"><input type="checkbox" v-model="people.fixed" @click="switchFixed(people.id);" tabindex="2"></td>
             </tr>
@@ -55,7 +55,6 @@
     data: function() {
       return {
         total_price: null,
-        people_num: 2,
         remainder: 0,
         peoples: [],
         id: 0,
@@ -66,6 +65,10 @@
 
     created: function(){
       this.addPeoples();
+    },
+
+    computed: {
+
     },
 
     methods: {
@@ -154,6 +157,8 @@
 
           peoples[index].ratio = ccc;
         }
+
+        this.calc();
       },
 
       switchFixed: function(id) {
@@ -433,6 +438,11 @@ input {
   button,input {
     &[disabled] {
       color: $color-gray;
+
+      + span {
+        border-color: transparent;
+        color: $color-gray;
+      }
     }
   }
 
