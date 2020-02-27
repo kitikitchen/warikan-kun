@@ -1,7 +1,8 @@
 {
   "name": "warikan-kun",
+  "displayName": "割り勘くん",
   "version": "1.0.0",
-  "description": "My impressive Nuxt.js project",
+  "description": "金額と人数を入力して、同等割の金額を計算するアプリケーションです。",
   "author": "Yoshihara Fumio",
   "private": true,
   "scripts": {
