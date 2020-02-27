@@ -1,23 +1,23 @@
 <template>
-  <div class="container" v-bind:class="{ calc: calc_flg, recalc: recalc_flg }">
+  <div class="container" :class="containerClasses">
     <div class="content">
       <div class="block">
         <Header />
         <p class="read">金額と人数を入力して<br>計算するボタンを押してください。</p>
         <div class="total_price">
           <div class="total_price_price"><p>合計金額</p><input type="number" placeholder="¥0" v-model="total_price" @input="checkInput"></div>
-          <div class="total_price_amari" v-if="calc_flg">
+          <div class="total_price_amari" v-if="isSuccess">
             余り<br>¥{{remainder}}
           </div>
         </div>
         <div class="bottons">
           <div class="peoples"><button type="button" @click="addPeoples(); checkInput();">＋</button><span>{{peoples.length}} 人</span><button type="button" @click="removePeoples(); checkInput();">−</button></div>
           <div class="button">
-            <button type="button" @click="calc" :disabled="!this.peoples.length"><span v-show="calc_flg">再</span>計算する</button>
+            <button type="button" @click="calc" :disabled="!this.peoples.length"><span v-show="isSuccess">再</span>計算する</button>
           </div>
         </div>
       </div>
-      <div class="block" v-if="calc_flg">
+      <div class="block" v-if="isSuccess">
         <table class="table">
           <thead>
             <tr class="table_head">
@@ -47,26 +47,32 @@
   import Header from '~/components/Header.vue'
 
   export default {
-    components: {
-      Header,
-    },
-    data: function() {
+    data() {
       return {
         total_price: null,
         remainder: 0,
         peoples: [],
         id: 0,
-        calc_flg: false,
-        recalc_flg: false,
+        isSuccess: false,
+        isError: false,
       };
     },
 
-    created: function(){
+    components: {
+      Header,
+    },
+
+    created() {
       this.addPeoples();
     },
 
     computed: {
-
+      containerClasses() {
+        return {
+          'is-success': this.isSuccess,
+          'is-error': this.isError
+        }
+      }
     },
 
     methods: {
@@ -77,8 +83,8 @@
         let ratios = 0;
         let remainder = 0;
 
-        this.calc_flg = true;
-        this.recalc_flg = false;
+        this.isSuccess = true;
+        this.isError = false;
 
         for (let i = 0; i < num; i++) {
           if (this.peoples[i].fixed) {
@@ -100,8 +106,8 @@
       },
 
       checkInput: function() {
-        if (this.calc_flg) {
-          this.recalc_flg = true;
+        if (this.isSuccess) {
+          this.isError = true;
         }
       },
 
@@ -121,8 +127,8 @@
         this.peoples.shift();
 
         if (!this.peoples.length) {
-          this.calc_flg = false;
-          this.recalc_flg = false;
+          this.isSuccess = false;
+          this.isError = false;
         }
       },
 
@@ -164,14 +170,12 @@
         const index = peoples.findIndex(item => {
           return item.id === id;
         });
-        // peoples[index].ratio -= 0.1;
       },
     }
   }
 </script>
 
 <style lang="scss" scoped>
-
 .container {
   display: flex;
   align-items: center;
@@ -188,7 +192,7 @@
   margin-bottom: 10px;
   transition: margin ease 0.5s;
 
-  .calc & {
+  .is-success & {
     opacity: 0;
     margin-top: -70px;
   }
@@ -219,12 +223,12 @@
     font-size: 24px;
     transition: ease 0.5s;
 
-    .calc & {
+    .is-success & {
       background: $color-white;
     }
   }
 
-  .calc & {
+  .is-success & {
     margin-top: 20px;
     background: $color-green;
     display: flex;
@@ -232,13 +236,13 @@
     align-items: center;
   }
 
-  .recalc & {
+  .is-error & {
     background: $color-red;
   }
 }
 
 .total_price_price {
-  .calc & {
+  .is-success & {
     width: 80%;
   }
 }
@@ -246,7 +250,7 @@
   color: $color-white;
   text-align: center;
   line-height: 1.4;
-  .calc & {
+  .is-success & {
     padding-left: 20px;
     width: 20%;
   }
@@ -258,14 +262,14 @@
   transition: ease 0.5s;
   padding: 10px vw(40);
 
-  .calc & {
+  .is-success & {
     justify-content: space-between;
     align-items: center;
     flex-direction: row;
     background: $color-green-light;
   }
 
-  .recalc & {
+  .is-error & {
     background: $color-red-light;
   }
 
@@ -295,7 +299,7 @@
     border-radius: 50%;
   }
 
-  .calc & {
+  .is-success & {
     margin-top: 0;
   }
 }
@@ -315,20 +319,20 @@
 
     font-size: 20px;
 
-    .calc & {
+    .is-success & {
       width: 100%;
       background: $color-gray;
       font-size: 16px;
     }
 
-    .recalc & {
+    .is-error & {
       width: 100%;
       background: $color-green;
       font-size: 16px;
     }
   }
 
-  .calc & {
+  .is-success & {
     margin-top: 0;
   }
 }
