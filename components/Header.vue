@@ -5,45 +5,47 @@
 </template>
 
 <style scoped lang="scss">
+.header {
+  padding: 100px vw(40) 40px;
+  transition: ease 0.5s;
+
+  .calc & {
+    padding: 15px vw(40) 10px;
+  }
+}
+
 .title {
   font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
   font-weight: 600;
-  font-size: 20px;
   color: $color-red;
   line-height: 1;
   letter-spacing: 1px;
   text-align: center;
-  font-size: 36px;
+  font-size: 40px;
+  transition: ease 0.5s;
 
   img {
-    width: 44px;
+    width: 40px;
     margin-right: 10px;
+    transition: ease 0.5s;
   }
 
   .small {
     font-size: 0.7em;
+    margin-left: 0.1rem;
   }
-  // @include breakpoint-up(sm) {
-  //   background: turquoise;
-  //   &::after {
-  //     content: "：SM";
-  //   }
-  // }
-  // @include breakpoint-up(md) {
-  //   background: violet;
-  //   &::after {
-  //     content: "：MD";
-  //   }
-  // }
-  // @include breakpoint-up(lg) {
-  //   background: wheat;
-  //   &::after {
-  //     content: "：LG";
-  //   }
-  // }
+
+  .calc & {
+    font-size: 20px;
+
+    img {
+      width: 26px;
+      margin-right: 10px;
+    }
+  }
 }
 </style>

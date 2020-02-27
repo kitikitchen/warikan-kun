@@ -2,9 +2,7 @@
   <div class="container" v-bind:class="{ calc: calc_flg, recalc: recalc_flg }">
     <div class="content">
       <div class="block">
-        <header class="header">
-          <h1 class="title"><img src="@/static/logo.svg" alt=""><span>割り勘<span class="small">くん</span></span></h1>
-        </header>
+        <Header />
         <p class="read">金額と人数を入力して<br>計算するボタンを押してください。</p>
         <div class="total_price">
           <div class="total_price_price"><p>合計金額</p><input type="number" placeholder="¥0" v-model="total_price" @input="checkInput"></div>
@@ -183,57 +181,11 @@
 
 .content {
   width: 100%;
-  // padding: vw(40);
-}
-
-.header {
-  padding: 100px vw(40) 40px;
-  transition: ease 0.5s;
-
-  .calc & {
-    padding: 15px vw(40) 10px;
-  }
-}
-
-.title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-  'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: 600;
-  color: $color-red;
-  line-height: 1;
-  letter-spacing: 1px;
-  text-align: center;
-  font-size: 40px;
-  transition: ease 0.5s;
-
-  img {
-    width: 40px;
-    margin-right: 10px;
-    transition: ease 0.5s;
-  }
-
-  .small {
-    font-size: 0.7em;
-    margin-left: 0.1rem;
-  }
-
-  .calc & {
-    font-size: 20px;
-
-    img {
-      width: 26px;
-      margin-right: 10px;
-    }
-  }
 }
 
 .read {
   text-align: center;
   margin-bottom: 10px;
-  // padding: 20px 0;
   transition: margin ease 0.5s;
 
   .calc & {
@@ -241,15 +193,6 @@
     margin-top: -70px;
   }
 }
-
-// .block {
-//   border: 1px solid #ccc;
-//   padding: vw(20);
-
-//   + .block {
-//     margin-top: 10px;
-//   }
-// }
 
 .total_price {
   position: relative;
@@ -265,7 +208,6 @@
     margin: auto;
     line-height: 1;
     font-size: 12px;
-    // color: $color-gray-dark;
   }
 
   input {
@@ -360,7 +302,6 @@
 
 .button {
   margin-top: 30px;
-  // display: flex;
   text-align: center;
 
   button {
@@ -417,10 +358,6 @@ input {
 .delete {
   width: 5%;
   text-align: center;
-  // display: flex;
-  // align-items: center;
-  // justify-content: center;
-  // flex-shrink: 1;
 }
 
 .name {
@@ -484,7 +421,4 @@ input {
 .table_head {
   font-size: 12px;
 }
-
-
-
 </style>
