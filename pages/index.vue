@@ -4,12 +4,7 @@
       <div class="block">
         <Header />
         <p class="read">金額と人数を入力して<br>計算するボタンを押してください。</p>
-        <div class="total_price">
-          <div class="total_price_price"><p>合計金額</p><input type="number" placeholder="¥0" v-model="total_price" @input="checkInput"></div>
-          <div class="total_price_amari" v-if="isSuccess">
-            余り<br>¥{{remainder}}
-          </div>
-        </div>
+        <AppTotalPrice :is-success="isSuccess" :total-price.sync="totalPrice" :remainder="remainder" />
         <div class="bottons">
           <div class="peoples"><button type="button" @click="addPeoples(); checkInput();">＋</button><span>{{peoples.length}} 人</span><button type="button" @click="removePeoples(); checkInput();">−</button></div>
           <div class="button">
@@ -44,12 +39,13 @@
 </template>
 
 <script>
+  import AppTotalPrice from '~/components/AppTotalPrice.vue'
   import Header from '~/components/Header.vue'
 
   export default {
     data() {
       return {
-        total_price: null,
+        totalPrice: null,
         remainder: 0,
         peoples: [],
         id: 0,
@@ -60,6 +56,7 @@
 
     components: {
       Header,
+      AppTotalPrice
     },
 
     created() {
@@ -76,10 +73,16 @@
     },
 
     methods: {
+      checkInput() {
+        if (this.isSuccess) {
+          this.isError = true;
+        }
+      },
+
       calc: function() {
         let num = this.peoples.length;
         let division_num = num;
-        let price = this.total_price;
+        let price = this.totalPrice;
         let ratios = 0;
         let remainder = 0;
 
@@ -103,12 +106,6 @@
         }
 
         this.remainder = remainder - price;
-      },
-
-      checkInput: function() {
-        if (this.isSuccess) {
-          this.isError = true;
-        }
       },
 
       addPeoples: function() {
@@ -195,64 +192,6 @@
   .is-success & {
     opacity: 0;
     margin-top: -70px;
-  }
-}
-
-.total_price {
-  position: relative;
-  padding: 10px vw(40);
-
-  p {
-    display: flex;
-    align-items: center;
-    position: absolute;
-    top: 0;
-    left: 40px;
-    bottom: 0;
-    margin: auto;
-    line-height: 1;
-    font-size: 12px;
-  }
-
-  input {
-    width: 100%;
-    text-align: right;
-    border: 2px solid $color-gray;
-    background: $color-gray-light;
-    padding: 5px 20px 5px 86px;
-    font-size: 24px;
-    transition: ease 0.5s;
-
-    .is-success & {
-      background: $color-white;
-    }
-  }
-
-  .is-success & {
-    margin-top: 20px;
-    background: $color-green;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .is-error & {
-    background: $color-red;
-  }
-}
-
-.total_price_price {
-  .is-success & {
-    width: 80%;
-  }
-}
-.total_price_amari {
-  color: $color-white;
-  text-align: center;
-  line-height: 1.4;
-  .is-success & {
-    padding-left: 20px;
-    width: 20%;
   }
 }
 
