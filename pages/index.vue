@@ -2,7 +2,7 @@
   <div class="container" :class="containerClasses">
     <div class="content">
       <div class="block">
-        <Header />
+        <AppHeader />
         <p class="read">金額と人数を入力して<br>計算するボタンを押してください。</p>
         <AppTotalPrice :is-success="isSuccess" :remainder="remainder" @update="onUpdateTotalPrice" />
         <div class="bottons">
@@ -39,8 +39,8 @@
 <script>
   import AppCalculator from '~/components/AppCalculator.vue'
   import AppCounter from '~/components/AppCounter.vue'
+  import AppHeader from '~/components/AppHeader.vue'
   import AppTotalPrice from '~/components/AppTotalPrice.vue'
-  import Header from '~/components/Header.vue'
 
   export default {
     data() {
@@ -57,8 +57,8 @@
     components: {
       AppCalculator,
       AppCounter,
+      AppHeader,
       AppTotalPrice,
-      Header,
     },
 
     created() {

@@ -9,7 +9,7 @@
   padding: 100px vw(40) 40px;
   transition: ease 0.5s;
 
-  .calc & {
+  .is-success & {
     padding: 15px vw(40) 10px;
   }
 }
@@ -39,7 +39,7 @@
     margin-left: 0.1rem;
   }
 
-  .calc & {
+  .is-success & {
     font-size: 20px;
 
     img {
