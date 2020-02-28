@@ -6,7 +6,7 @@
         <p class="read">金額と人数を入力して<br>計算するボタンを押してください。</p>
         <AppTotalPrice :is-success="isSuccess" :remainder="remainder" @update="onUpdateTotalPrice" />
         <div class="bottons">
-          <div class="peoples"><button type="button" @click="onClickIncrementButton">＋</button><span>{{users.length}} 人</span><button type="button" @click="removePeoples(); checkInput();">−</button></div>
+          <AppCounter :users="users" @increment="onIncrementPerson" @decrement="onDecreasePerson" />
           <div class="button">
             <button type="button" @click="calc" :disabled="!this.users.length"><span v-show="isSuccess">再</span>計算する</button>
           </div>
@@ -39,6 +39,7 @@
 </template>
 
 <script>
+  import AppCounter from '~/components/AppCounter.vue'
   import AppTotalPrice from '~/components/AppTotalPrice.vue'
   import Header from '~/components/Header.vue'
 
@@ -55,8 +56,9 @@
     },
 
     components: {
+      AppCounter,
+      AppTotalPrice,
       Header,
-      AppTotalPrice
     },
 
     created() {
@@ -112,12 +114,14 @@
         this.totalPrice = totalPrice;
       },
 
-      onClickIncrementButton() {
+      onIncrementPerson() {
         this.checkInput();
         this.addUser();
       },
 
-      onClickDecreaseButton() {
+      onDecreasePerson() {
+        this.removeUser();
+        this.checkInput();
       },
 
       addUser() {
@@ -131,7 +135,7 @@
         this.users = [...this.users, newUser];
       },
 
-      removePeoples: function() {
+      removeUser() {
         this.users.shift();
 
         if (!this.users.length) {
@@ -227,30 +231,6 @@
     &[disabled] {
       background: $color-gray;
     }
-  }
-}
-
-.peoples {
-  margin-top: 0px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  span {
-    border: 2px solid $color-gray;
-    background: $color-gray-light;
-    padding: 5px 20px;
-  }
-
-  button {
-    margin: 0 10px;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-  }
-
-  .is-success & {
-    margin-top: 0;
   }
 }
 
