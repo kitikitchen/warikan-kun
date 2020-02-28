@@ -4,11 +4,11 @@
       <div class="block">
         <Header />
         <p class="read">金額と人数を入力して<br>計算するボタンを押してください。</p>
-        <AppTotalPrice :is-success="isSuccess" :total-price.sync="totalPrice" :remainder="remainder" />
+        <AppTotalPrice :is-success="isSuccess" :remainder="remainder" @update="onUpdateTotalPrice" />
         <div class="bottons">
-          <div class="peoples"><button type="button" @click="addPeoples(); checkInput();">＋</button><span>{{peoples.length}} 人</span><button type="button" @click="removePeoples(); checkInput();">−</button></div>
+          <div class="peoples"><button type="button" @click="onClickIncrementButton">＋</button><span>{{users.length}} 人</span><button type="button" @click="removePeoples(); checkInput();">−</button></div>
           <div class="button">
-            <button type="button" @click="calc" :disabled="!this.peoples.length"><span v-show="isSuccess">再</span>計算する</button>
+            <button type="button" @click="calc" :disabled="!this.users.length"><span v-show="isSuccess">再</span>計算する</button>
           </div>
         </div>
       </div>
@@ -24,12 +24,12 @@
             </tr>
           </thead>
           <tbody>
-            <tr class="table_item" v-for="people in peoples" v-bind:key="people.id">
-              <td class="delete"><button type="button" @click="removePeople(people.id); checkInput();">❌</button></td>
-              <td class="name"><input type="text" v-model="people.name" tabindex="1"></td>
-              <td class="ratio"><button type="button" @click="changeRatio(people.id, 'plus');" :disabled="people.fixed">＋</button><span>{{people.ratio}}</span><button type="button" @click="changeRatio(people.id, 'minus');" :disabled="people.fixed">−</button></td>
-              <td class="price"><input type="number" v-model="people.price" @input="checkInput();" :disabled="people.fixed" tabindex="2"></td>
-              <td class="fixed"><input type="checkbox" v-model="people.fixed" @click="switchFixed(people.id);" tabindex="2"></td>
+            <tr class="table_item" v-for="user in users" v-bind:key="user.id">
+              <td class="delete"><button type="button" @click="removePeople(user.id); checkInput();">❌</button></td>
+              <td class="name"><input type="text" v-model="user.name" tabindex="1"></td>
+              <td class="ratio"><button type="button" @click="changeRatio(user.id, 'plus');" :disabled="user.fixed">＋</button><span>{{user.ratio}}</span><button type="button" @click="changeRatio(user.id, 'minus');" :disabled="user.fixed">−</button></td>
+              <td class="price"><input type="number" v-model="user.price" @input="checkInput();" :disabled="user.fixed" tabindex="2"></td>
+              <td class="fixed"><input type="checkbox" v-model="user.fixed" @click="switchFixed(user.id);" tabindex="2"></td>
             </tr>
           </tbody>
         </table>
@@ -47,7 +47,7 @@
       return {
         totalPrice: null,
         remainder: 0,
-        peoples: [],
+        users: [],
         id: 0,
         isSuccess: false,
         isError: false,
@@ -60,7 +60,7 @@
     },
 
     created() {
-      this.addPeoples();
+      this.addUser();
     },
 
     computed: {
@@ -80,7 +80,7 @@
       },
 
       calc: function() {
-        let num = this.peoples.length;
+        let num = this.users.length;
         let division_num = num;
         let price = this.totalPrice;
         let ratios = 0;
@@ -90,81 +90,92 @@
         this.isError = false;
 
         for (let i = 0; i < num; i++) {
-          if (this.peoples[i].fixed) {
-            price -= this.peoples[i].price;
+          if (this.users[i].fixed) {
+            price -= this.users[i].price;
           } else {
-            ratios += this.peoples[i].ratio;
+            ratios += this.users[i].ratio;
           }
         }
 
         for (
           let i = 0; i < num; i++) {
-          if (!this.peoples[i].fixed) {
-            this.peoples[i].price = parseInt(Math.ceil(price / ratios * this.peoples[i].ratio), 10);
-            remainder += this.peoples[i].price;
+          if (!this.users[i].fixed) {
+            this.users[i].price = parseInt(Math.ceil(price / ratios * this.users[i].ratio), 10);
+            remainder += this.users[i].price;
           }
         }
 
         this.remainder = remainder - price;
       },
 
-      addPeoples: function() {
-        const num = this.peoples.length+1;
-        const people = {
+      onUpdateTotalPrice(totalPrice) {
+        this.totalPrice = totalPrice;
+      },
+
+      onClickIncrementButton() {
+        this.checkInput();
+        this.addUser();
+      },
+
+      onClickDecreaseButton() {
+      },
+
+      addUser() {
+        const newUser = {
           id: this.id++,
-          name: `${num}さん`,
+          name: `${this.id}さん`,
           ratio: 1,
           price: null,
           fixed: false
         };
-        this.peoples.unshift(people);
+        this.users = [...this.users, newUser];
       },
 
       removePeoples: function() {
-        this.peoples.shift();
+        this.users.shift();
 
-        if (!this.peoples.length) {
+        if (!this.users.length) {
           this.isSuccess = false;
           this.isError = false;
         }
       },
 
       removePeople: function(id) {
-        const peoples = this.peoples;
-        const index = peoples.findIndex(item => {
+        const users = this.users;
+        const index = users.findIndex(item => {
           return item.id === id;
         });
-        peoples.splice(index, 1);
+        users.splice(index, 1);
       },
 
       changeRatio: function(id, direction) {
-        const peoples = this.peoples;
+        const users = this.users;
         const ratio = 0.1;
-        const index = peoples.findIndex(item => {
+        const index = users.findIndex(item => {
           return item.id === id;
         });
 
         if (direction === 'plus') {
-          let aaa = peoples[index].ratio + ratio;
+          let aaa = users[index].ratio + ratio;
           let bbb = Math.round(aaa * 10)
           let ccc = bbb / 10;
 
-          peoples[index].ratio = ccc;
+          users[index].ratio = ccc;
 
         } else if (direction === 'minus') {
-          let aaa = peoples[index].ratio - ratio;
+          let aaa = users[index].ratio - ratio;
           let bbb = Math.round(aaa * 10)
           let ccc = bbb / 10;
 
-          peoples[index].ratio = ccc;
+          users[index].ratio = ccc;
         }
 
         this.calc();
       },
 
       switchFixed: function(id) {
-        const peoples = this.peoples;
-        const index = peoples.findIndex(item => {
+        const users = this.users;
+        const index = users.findIndex(item => {
           return item.id === id;
         });
       },
