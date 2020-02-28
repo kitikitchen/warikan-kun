@@ -2,7 +2,7 @@
   <div class="total_price">
     <div class="total_price_price">
       <p>合計金額</p>
-      <input type="number" placeholder="¥0" :value="totalPrice" @change="updateTotalPrice">
+      <input type="number" placeholder="¥0" v-model.number="totalPrice" @change="updateTotalPrice">
     </div>
     <div class="total_price_remainder" v-if="isSuccess">
       余り<br>¥{{ remainder }}
@@ -27,7 +27,6 @@ export default {
   },
   methods: {
     updateTotalPrice(event) {
-      this.totalPrice = event.target.value;
       this.$emit('update', this.totalPrice);
     }
   }
