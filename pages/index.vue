@@ -7,9 +7,7 @@
         <AppTotalPrice :is-success="isSuccess" :remainder="remainder" @update="onUpdateTotalPrice" />
         <div class="bottons">
           <AppCounter :users="users" @increment="onIncrementPerson" @decrement="onDecreasePerson" />
-          <div class="button">
-            <button type="button" @click="calc" :disabled="!this.users.length"><span v-show="isSuccess">再</span>計算する</button>
-          </div>
+          <AppCalculator :users="users" :is-success="isSuccess" @calculate="splitPrice" />
         </div>
       </div>
       <div class="block" v-if="isSuccess">
@@ -25,10 +23,10 @@
           </thead>
           <tbody>
             <tr class="table_item" v-for="user in users" v-bind:key="user.id">
-              <td class="delete"><button type="button" @click="removePeople(user.id); checkInput();">❌</button></td>
+              <td class="delete"><button type="button" @click="removePeople(user.id); validate();">❌</button></td>
               <td class="name"><input type="text" v-model="user.name" tabindex="1"></td>
               <td class="ratio"><button type="button" @click="changeRatio(user.id, 'plus');" :disabled="user.fixed">＋</button><span>{{user.ratio}}</span><button type="button" @click="changeRatio(user.id, 'minus');" :disabled="user.fixed">−</button></td>
-              <td class="price"><input type="number" v-model="user.price" @input="checkInput();" :disabled="user.fixed" tabindex="2"></td>
+              <td class="price"><input type="number" v-model="user.price" @input="validate();" :disabled="user.fixed" tabindex="2"></td>
               <td class="fixed"><input type="checkbox" v-model="user.fixed" @click="switchFixed(user.id);" tabindex="2"></td>
             </tr>
           </tbody>
@@ -39,6 +37,7 @@
 </template>
 
 <script>
+  import AppCalculator from '~/components/AppCalculator.vue'
   import AppCounter from '~/components/AppCounter.vue'
   import AppTotalPrice from '~/components/AppTotalPrice.vue'
   import Header from '~/components/Header.vue'
@@ -56,6 +55,7 @@
     },
 
     components: {
+      AppCalculator,
       AppCounter,
       AppTotalPrice,
       Header,
@@ -75,39 +75,41 @@
     },
 
     methods: {
-      checkInput() {
+      validate() {
         if (this.isSuccess) {
           this.isError = true;
         }
       },
 
-      calc: function() {
-        let num = this.users.length;
-        let division_num = num;
-        let price = this.totalPrice;
+      splitPrice() {
+        let userAll = this.users.length;
+        let totalPrice = this.totalPrice;
         let ratios = 0;
         let remainder = 0;
 
         this.isSuccess = true;
         this.isError = false;
 
-        for (let i = 0; i < num; i++) {
-          if (this.users[i].fixed) {
-            price -= this.users[i].price;
+        for (let i = 0; i < userAll; i++) {
+          const isFixed = this.users[i].fixed;
+
+          if (isFixed) {
+            totalPrice -= this.users[i].totalPrice;
           } else {
             ratios += this.users[i].ratio;
           }
         }
 
-        for (
-          let i = 0; i < num; i++) {
-          if (!this.users[i].fixed) {
-            this.users[i].price = parseInt(Math.ceil(price / ratios * this.users[i].ratio), 10);
+        for (let i = 0; i < userAll; i++) {
+          const isFixed = this.users[i].fixed;
+
+          if (!isFixed) {
+            this.users[i].price = parseInt(Math.ceil(totalPrice / ratios * this.users[i].ratio), 10);
             remainder += this.users[i].price;
           }
         }
 
-        this.remainder = remainder - price;
+        this.remainder = remainder - totalPrice;
       },
 
       onUpdateTotalPrice(totalPrice) {
@@ -115,13 +117,13 @@
       },
 
       onIncrementPerson() {
-        this.checkInput();
+        this.validate();
         this.addUser();
       },
 
       onDecreasePerson() {
         this.removeUser();
-        this.checkInput();
+        this.validate();
       },
 
       addUser() {
@@ -231,39 +233,6 @@
     &[disabled] {
       background: $color-gray;
     }
-  }
-}
-
-.button {
-  margin-top: 30px;
-  text-align: center;
-
-  button {
-    border-radius: 50px;
-    margin: auto;
-    background: $color-green;
-    color: $color-white;
-    width: 80%;
-    padding: 5px 30px;
-    font-weight: bold;
-
-    font-size: 20px;
-
-    .is-success & {
-      width: 100%;
-      background: $color-gray;
-      font-size: 16px;
-    }
-
-    .is-error & {
-      width: 100%;
-      background: $color-green;
-      font-size: 16px;
-    }
-  }
-
-  .is-success & {
-    margin-top: 0;
   }
 }
 
