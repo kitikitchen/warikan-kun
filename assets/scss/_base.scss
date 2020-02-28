@@ -55,3 +55,15 @@ a {
   color: $base-selection-color;
   text-shadow: none;
 }
+
+input {
+  width: 100%;
+  padding: 3px 5px;
+  border: 2px solid $color-gray;
+  background: $color-gray-light;
+
+  &[disabled] {
+    border: 2px solid $color-white !important;
+    background: $color-white !important;
+  }
+}

@@ -3,34 +3,15 @@
     <div class="content">
       <div class="block">
         <AppHeader />
-        <p class="read">金額と人数を入力して<br>計算するボタンを押してください。</p>
+        <p class="lead">金額と人数を入力して<br>計算するボタンを押してください。</p>
         <AppTotalPrice :is-success="isSuccess" :remainder="remainder" @update="onUpdateTotalPrice" />
-        <div class="bottons">
-          <AppCounter :users="users" @increment="onIncrementPerson" @decrement="onDecreasePerson" />
+        <div class="contoroller">
+          <AppCounter :users="users" @increment="onIncrementUser" @decrement="onDecrementUser" />
           <AppCalculator :users="users" :is-success="isSuccess" @calculate="splitPrice" />
         </div>
       </div>
       <div class="block" v-if="isSuccess">
-        <table class="table">
-          <thead>
-            <tr class="table_head">
-              <th class="delete">&nbsp;</th>
-              <th class="name">名前</th>
-              <th class="ratio">比率</th>
-              <th class="price">金額</th>
-              <th class="fixed">固定</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="table_item" v-for="user in users" v-bind:key="user.id">
-              <td class="delete"><button type="button" @click="removePeople(user.id); validate();">❌</button></td>
-              <td class="name"><input type="text" v-model="user.name" tabindex="1"></td>
-              <td class="ratio"><button type="button" @click="changeRatio(user.id, 'plus');" :disabled="user.fixed">＋</button><span>{{user.ratio}}</span><button type="button" @click="changeRatio(user.id, 'minus');" :disabled="user.fixed">−</button></td>
-              <td class="price"><input type="number" v-model="user.price" @input="validate();" :disabled="user.fixed" tabindex="2"></td>
-              <td class="fixed"><input type="checkbox" v-model="user.fixed" @click="switchFixed(user.id);" tabindex="2"></td>
-            </tr>
-          </tbody>
-        </table>
+        <AppTable :users="users" @delete="doDeleteUser" />
       </div>
     </div>
   </div>
@@ -40,6 +21,7 @@
   import AppCalculator from '~/components/AppCalculator.vue'
   import AppCounter from '~/components/AppCounter.vue'
   import AppHeader from '~/components/AppHeader.vue'
+  import AppTable from '~/components/AppTable.vue'
   import AppTotalPrice from '~/components/AppTotalPrice.vue'
 
   export default {
@@ -58,11 +40,12 @@
       AppCalculator,
       AppCounter,
       AppHeader,
+      AppTable,
       AppTotalPrice,
     },
 
     created() {
-      this.addUser();
+      this.createUser();
     },
 
     computed: {
@@ -116,17 +99,17 @@
         this.totalPrice = totalPrice;
       },
 
-      onIncrementPerson() {
+      onIncrementUser() {
         this.validate();
-        this.addUser();
+        this.createUser();
       },
 
-      onDecreasePerson() {
-        this.removeUser();
+      onDecrementUser() {
+        this.destroyUser();
         this.validate();
       },
 
-      addUser() {
+      createUser() {
         const newUser = {
           id: this.id++,
           name: `${this.id}さん`,
@@ -137,7 +120,7 @@
         this.users = [...this.users, newUser];
       },
 
-      removeUser() {
+      destroyUser() {
         this.users.shift();
 
         if (!this.users.length) {
@@ -146,7 +129,12 @@
         }
       },
 
-      removePeople: function(id) {
+      doDeleteUser(id) {
+        this.validate()
+        this.removeUser(id);
+      },
+
+      removeUser(id) {
         const users = this.users;
         const index = users.findIndex(item => {
           return item.id === id;
@@ -201,7 +189,7 @@
   width: 100%;
 }
 
-.read {
+.lead {
   text-align: center;
   margin-bottom: 10px;
   transition: margin ease 0.5s;
@@ -212,7 +200,7 @@
   }
 }
 
-.bottons {
+.contoroller {
   display: flex;
   flex-direction: column;
   transition: ease 0.5s;
@@ -234,94 +222,5 @@
       background: $color-gray;
     }
   }
-}
-
-input {
-  width: 100%;
-  padding: 3px 5px;
-  border: 2px solid $color-gray;
-  background: $color-gray-light;
-
-  &[disabled] {
-    border: 2px solid $color-white !important;
-    background: $color-white !important;
-  }
-}
-
-.table {
-  width: 100%;
-  margin-top: 20px;
-
-  td,th {
-    padding: 0 10px;
-  }
-
-}
-
-.delete {
-  width: 5%;
-  text-align: center;
-}
-
-.name {
-  width: 20%;
-}
-
-.ratio {
-  width: 2%;
-
-  .table_item & {
-    width: 100%;
-    display: flex;
-  }
-
-  button,input {
-    &[disabled] {
-      color: $color-gray;
-
-      + span {
-        border-color: transparent;
-        color: $color-gray;
-      }
-    }
-  }
-
-  span {
-    width: 40px;
-    padding: 2px 5px;
-    border: 2px solid $color-gray-light;
-  }
-}
-
-.price {
-  width: 20%;
-
-  input {
-    text-align: right;
-  }
-}
-
-.table_item {
-  margin-top: 10px;
-  height: 100%;
-  td {
-    padding: 5px;
-  }
-}
-
-.fixed {
-  width: 9%;
-  height: 100%;
-
-  .table_item & {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-  }
-}
-
-.table_head {
-  font-size: 12px;
 }
 </style>
