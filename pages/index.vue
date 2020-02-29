@@ -121,7 +121,7 @@
       },
 
       destroyUser() {
-        this.users.shift();
+        this.users.shift(id);
 
         if (!this.users.length) {
           this.isSuccess = false;
@@ -136,8 +136,8 @@
 
       removeUser(id) {
         const users = this.users;
-        const index = users.findIndex(item => {
-          return item.id === id;
+        const index = users.findIndex(user => {
+          return user.id == id;
         });
         users.splice(index, 1);
       },
