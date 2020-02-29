@@ -11,7 +11,7 @@
         </div>
       </div>
       <div class="block" v-if="isSuccess">
-        <AppTable :users="users" @delete="doDeleteUser" />
+        <AppTable :users="users" @delete="doDeleteUser" @spin="validate" @update="validate" @toggle="toggleFixed" />
       </div>
     </div>
   </div>
@@ -77,7 +77,7 @@
           const isFixed = this.users[i].fixed;
 
           if (isFixed) {
-            totalPrice -= this.users[i].totalPrice;
+            totalPrice -= this.users[i].price;
           } else {
             ratios += this.users[i].ratio;
           }
@@ -142,32 +142,7 @@
         users.splice(index, 1);
       },
 
-      changeRatio: function(id, direction) {
-        const users = this.users;
-        const ratio = 0.1;
-        const index = users.findIndex(item => {
-          return item.id === id;
-        });
-
-        if (direction === 'plus') {
-          let aaa = users[index].ratio + ratio;
-          let bbb = Math.round(aaa * 10)
-          let ccc = bbb / 10;
-
-          users[index].ratio = ccc;
-
-        } else if (direction === 'minus') {
-          let aaa = users[index].ratio - ratio;
-          let bbb = Math.round(aaa * 10)
-          let ccc = bbb / 10;
-
-          users[index].ratio = ccc;
-        }
-
-        this.calc();
-      },
-
-      switchFixed: function(id) {
+      toggleFixed(id) {
         const users = this.users;
         const index = users.findIndex(item => {
           return item.id === id;

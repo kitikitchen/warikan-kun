@@ -13,9 +13,9 @@
     <tr class="table_item" v-for="user in users" v-bind:key="user.id">
       <td class="delete"><button :data-id="user.id" type="button" @click="onClickDeleteButton">❌</button></td>
       <td class="name"><input type="text" v-model="user.name" tabindex="1"></td>
-      <td class="ratio"><button type="button" @click="changeRatio(user.id, 'plus');" :disabled="user.fixed">＋</button><span>{{user.ratio}}</span><button type="button" @click="changeRatio(user.id, 'minus');" :disabled="user.fixed">−</button></td>
-      <td class="price"><input type="number" v-model="user.price" @input="validate();" :disabled="user.fixed" tabindex="2"></td>
-      <td class="fixed"><input type="checkbox" v-model="user.fixed" @click="switchFixed(user.id);" tabindex="2"></td>
+      <td class="ratio"><input type="number" v-model.number="user.ratio" @change="onChangeSpinner" min="0" max="100" step="0.1"></td>
+      <td class="price"><input type="number" v-model.number="user.price" @input="onChangeTextField" :disabled="user.fixed" tabindex="2"></td>
+      <td class="fixed"><input :data-id="user.id" type="checkbox" v-model="user.fixed" @click="onClickFixedCheckbox" tabindex="3"></td>
     </tr>
   </tbody>
 </table>
@@ -34,6 +34,20 @@ export default {
       const id = event.currentTarget.getAttribute('data-id');
 
       this.$emit('delete', id);
+    },
+
+    onChangeSpinner() {
+      this.$emit('spin');
+    },
+
+    onChangeTextField() {
+      this.$emit('update');
+    },
+
+    onClickFixedCheckbox(event) {
+      const id = event.currentTarget.getAttribute('data-id');
+
+      this.$emit('toggle', id);
     }
   }
 }
