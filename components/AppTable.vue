@@ -13,7 +13,7 @@
     <tr class="table_item" v-for="user in users" v-bind:key="user.id">
       <td class="delete"><button :data-id="user.id" type="button" @click="onClickDeleteButton">❌</button></td>
       <td class="name"><input type="text" v-model="user.name" tabindex="1"></td>
-      <td class="ratio"><input type="number" v-model.number="user.ratio" @change="onChangeSpinner" min="0" max="100" step="0.1"></td>
+      <td class="ratio"><input type="number" v-model.number="user.ratio" @change="onChangeSpinner" :disabled="user.fixed" min="0" max="100" step="0.1"></td>
       <td class="price"><input type="number" v-model.number="user.price" @input="onChangeTextField" :disabled="user.fixed" tabindex="2"></td>
       <td class="fixed"><input :data-id="user.id" type="checkbox" v-model="user.fixed" @click="onClickFixedCheckbox" tabindex="3"></td>
     </tr>
@@ -55,13 +55,9 @@ export default {
 
 <style lang="scss" scoped>
 .table {
-  width: 100%;
+  table-layout: fixed;
   margin-top: 20px;
-
-  td,th {
-    padding: 0 10px;
-  }
-
+  width: 100%;
 }
 
 .table_head {
@@ -71,29 +67,36 @@ export default {
 .table_item {
   margin-top: 10px;
   height: 100%;
+
   td {
     padding: 5px;
   }
 }
 
 .delete {
-  width: 5%;
+  width: 10px;
   text-align: center;
 }
 
 .name {
-  width: 20%;
+  width: 15%;
+}
+
+.price {
+  width: 15%;
+
+  input {
+    width: 100%;
+    text-align: right;
+  }
 }
 
 .ratio {
-  width: 2%;
+  width: 5%;
 
-  .table_item & {
+  input {
     width: 100%;
-    display: flex;
-  }
 
-  button,input {
     &[disabled] {
       color: $color-gray;
 
@@ -111,23 +114,12 @@ export default {
   }
 }
 
-.price {
-  width: 20%;
-
-  input {
-    text-align: right;
-  }
-}
-
 .fixed {
-  width: 9%;
+  width: 15px;
   height: 100%;
 
-  .table_item & {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    height: 100%;
+  input {
+    vertical-align: middle;
   }
 }
 </style>

@@ -59,7 +59,7 @@ input {
   background: $color-gray-light;
 
   &[disabled] {
-    border: 2px solid $color-white !important;
     background: $color-white !important;
+    color: $color-gray;
   }
 }
