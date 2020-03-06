@@ -3,6 +3,10 @@ import pkg from './package'
 export default {
   mode: 'spa',
 
+  server: {
+    host: '0.0.0.0'
+  },
+
   /*
   ** Headers of the page
   */
@@ -41,6 +45,7 @@ export default {
   modules: [
     // '@nuxtjs/vuetify'
     '@nuxtjs/style-resources',
+    '@nuxtjs/pwa'
   ],
 
   styleResources: {
@@ -75,6 +80,14 @@ export default {
     ** You can extend webpack config here
     */
     extend(config, ctx) {
+    }
+  },
+
+  pwa: {
+    manifest: {
+      name: pkg.displayName,
+      short_name: pkg.displayName,
+      lang: 'ja'
     }
   }
 }
