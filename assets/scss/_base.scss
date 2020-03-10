@@ -40,6 +40,11 @@ a {
   }
 }
 
+button {
+  border: 0;
+  background: transparent;
+}
+
 ::-moz-selection {
   background-color: $base-selection-background-color;
   color: $base-selection-color;
@@ -56,10 +61,16 @@ input {
   width: 100%;
   padding: 3px 5px;
   border: 2px solid $color-gray;
+  border-radius: 2px;
   background: $color-gray-light;
 
   &[disabled] {
     background: $color-white !important;
     color: $color-gray;
   }
+}
+
+[type="text"],
+[type="number"] {
+  -webkit-appearance: none;
 }
