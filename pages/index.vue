@@ -143,7 +143,8 @@ export default {
     },
 
     destroyUser() {
-      this.users.shift(id)
+      const length = this.users.length
+      this.users.shift(length)
 
       if (!this.users.length) {
         this.isSuccess = false
