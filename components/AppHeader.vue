@@ -1,6 +1,8 @@
 <template>
   <header class="header">
-    <h1 class="title"><img src="@/static/logo.svg" alt=""><span>割り勘<span class="small">くん</span></span></h1>
+    <h1 class="title">
+      <img src="@/static/logo.svg" alt=""><span>割り勘<small>くん</small></span>
+    </h1>
   </header>
 </template>
 
@@ -16,7 +18,7 @@
 
 .title {
   font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-  'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -34,7 +36,7 @@
     transition: ease 0.5s;
   }
 
-  .small {
+  small {
     font-size: 0.7em;
     margin-left: 0.1rem;
   }

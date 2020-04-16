@@ -3,153 +3,175 @@
     <div class="content">
       <div class="block">
         <AppHeader />
-        <p class="lead">金額と人数を入力して<br>計算するボタンを押してください。</p>
-        <AppTotalPrice :is-success="isSuccess" :remainder="remainder" @update="onUpdateTotalPrice" />
+        <p class="lead">
+          金額と人数を入力して<br >計算するボタンを押してください。
+        </p>
+        <AppTotalPrice
+          :is-success="isSuccess"
+          :remainder="remainder"
+          @update="onUpdateTotalPrice"
+        />
         <div class="contoroller">
-          <AppCounter :users="users" @increment="onIncrementUser" @decrement="onDecrementUser" />
-          <AppCalculator :users="users" :is-success="isSuccess" @calculate="splitPrice" />
+          <AppCounter
+            :users="users"
+            @increment="onIncrementUser"
+            @decrement="onDecrementUser"
+          />
+          <AppCalculator
+            :users="users"
+            :is-success="isSuccess"
+            @calculate="splitPrice"
+          />
         </div>
       </div>
-      <div class="block" v-if="isSuccess">
-        <AppTable :users="users" @delete="doDeleteUser" @spin="validate" @update="validate" @toggle="toggleFixed" />
+      <div v-if="isSuccess" class="block">
+        <AppTable
+          :users="users"
+          @delete="doDeleteUser"
+          @spin="validate"
+          @update="validate"
+          @toggle="toggleFixed"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-  import AppCalculator from '~/components/AppCalculator.vue'
-  import AppCounter from '~/components/AppCounter.vue'
-  import AppHeader from '~/components/AppHeader.vue'
-  import AppTable from '~/components/AppTable.vue'
-  import AppTotalPrice from '~/components/AppTotalPrice.vue'
+import AppCalculator from '~/components/AppCalculator.vue'
+import AppCounter from '~/components/AppCounter.vue'
+import AppHeader from '~/components/AppHeader.vue'
+import AppTable from '~/components/AppTable.vue'
+import AppTotalPrice from '~/components/AppTotalPrice.vue'
 
-  export default {
-    data() {
+export default {
+  components: {
+    AppCalculator,
+    AppCounter,
+    AppHeader,
+    AppTable,
+    AppTotalPrice,
+  },
+  data() {
+    return {
+      totalPrice: null,
+      remainder: 0,
+      users: [],
+      id: 0,
+      isSuccess: false,
+      isError: false,
+    }
+  },
+
+  computed: {
+    containerClasses() {
       return {
-        totalPrice: null,
-        remainder: 0,
-        users: [],
-        id: 0,
-        isSuccess: false,
-        isError: false,
-      };
+        'is-success': this.isSuccess,
+        'is-error': this.isError,
+      }
     },
+  },
 
-    components: {
-      AppCalculator,
-      AppCounter,
-      AppHeader,
-      AppTable,
-      AppTotalPrice,
-    },
+  created() {
+    this.createUser()
+  },
 
-    created() {
-      this.createUser();
-    },
-
-    computed: {
-      containerClasses() {
-        return {
-          'is-success': this.isSuccess,
-          'is-error': this.isError
-        }
+  methods: {
+    validate() {
+      if (this.isSuccess) {
+        this.isError = true
       }
     },
 
-    methods: {
-      validate() {
-        if (this.isSuccess) {
-          this.isError = true;
+    splitPrice() {
+      let userAll = this.users.length
+      let totalPrice = this.totalPrice
+      let ratios = 0
+      let remainder = 0
+
+      this.isSuccess = true
+      this.isError = false
+
+      for (let i = 0; i < userAll; i++) {
+        const isFixed = this.users[i].fixed
+
+        if (isFixed) {
+          totalPrice -= this.users[i].price
+        } else {
+          ratios += this.users[i].ratio
         }
-      },
+      }
 
-      splitPrice() {
-        let userAll = this.users.length;
-        let totalPrice = this.totalPrice;
-        let ratios = 0;
-        let remainder = 0;
+      for (let i = 0; i < userAll; i++) {
+        const isFixed = this.users[i].fixed
 
-        this.isSuccess = true;
-        this.isError = false;
-
-        for (let i = 0; i < userAll; i++) {
-          const isFixed = this.users[i].fixed;
-
-          if (isFixed) {
-            totalPrice -= this.users[i].price;
-          } else {
-            ratios += this.users[i].ratio;
-          }
+        if (!isFixed) {
+          this.users[i].price = parseInt(
+            Math.ceil((totalPrice / ratios) * this.users[i].ratio),
+            10
+          )
+          remainder += this.users[i].price
         }
+      }
 
-        for (let i = 0; i < userAll; i++) {
-          const isFixed = this.users[i].fixed;
+      this.remainder = remainder - totalPrice
+    },
 
-          if (!isFixed) {
-            this.users[i].price = parseInt(Math.ceil(totalPrice / ratios * this.users[i].ratio), 10);
-            remainder += this.users[i].price;
-          }
-        }
+    onUpdateTotalPrice(totalPrice) {
+      this.totalPrice = totalPrice
+    },
 
-        this.remainder = remainder - totalPrice;
-      },
+    onIncrementUser() {
+      this.validate()
+      this.createUser()
+    },
 
-      onUpdateTotalPrice(totalPrice) {
-        this.totalPrice = totalPrice;
-      },
+    onDecrementUser() {
+      this.destroyUser()
+      this.validate()
+    },
 
-      onIncrementUser() {
-        this.validate();
-        this.createUser();
-      },
+    createUser() {
+      const newUser = {
+        id: this.id++,
+        name: `${this.id}さん`,
+        ratio: 1,
+        price: null,
+        fixed: false,
+      }
+      this.users = [...this.users, newUser]
+    },
 
-      onDecrementUser() {
-        this.destroyUser();
-        this.validate();
-      },
+    destroyUser() {
+      this.users.shift(id)
 
-      createUser() {
-        const newUser = {
-          id: this.id++,
-          name: `${this.id}さん`,
-          ratio: 1,
-          price: null,
-          fixed: false
-        };
-        this.users = [...this.users, newUser];
-      },
+      if (!this.users.length) {
+        this.isSuccess = false
+        this.isError = false
+      }
+    },
 
-      destroyUser() {
-        this.users.shift(id);
+    doDeleteUser(id) {
+      this.validate()
+      this.removeUser(id)
+    },
 
-        if (!this.users.length) {
-          this.isSuccess = false;
-          this.isError = false;
-        }
-      },
+    removeUser(id) {
+      const users = this.users
+      const index = users.findIndex((user) => {
+        return user.id == id
+      })
+      users.splice(index, 1)
+    },
 
-      doDeleteUser(id) {
-        this.validate()
-        this.removeUser(id);
-      },
-
-      removeUser(id) {
-        const users = this.users;
-        const index = users.findIndex(user => {
-          return user.id == id;
-        });
-        users.splice(index, 1);
-      },
-
-      toggleFixed(id) {
-        const users = this.users;
-        const index = users.findIndex(item => {
-          return item.id === id;
-        });
-      },
-    }
-  }
+    toggleFixed(id) {
+      const users = this.users
+      const index = users.findIndex((item) => {
+        return item.id === id
+      })
+    },
+  },
+}
 </script>
 
 <style lang="scss" scoped>

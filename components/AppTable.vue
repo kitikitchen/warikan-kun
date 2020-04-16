@@ -1,55 +1,97 @@
 <template>
-<table class="table">
-  <thead>
-    <tr class="table_head">
-      <th class="delete">&nbsp;</th>
-      <th class="name">名前</th>
-      <th class="ratio">比率</th>
-      <th class="price">金額</th>
-      <th class="fixed">固定</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr class="table_item" v-for="user in users" v-bind:key="user.id">
-      <td class="delete"><button :data-id="user.id" type="button" @click="onClickDeleteButton">❌</button></td>
-      <td class="name"><input type="text" v-model="user.name" tabindex="1"></td>
-      <td class="ratio"><input type="number" v-model.number="user.ratio" @change="onChangeSpinner" :disabled="user.fixed" min="0" max="100" step="0.1"></td>
-      <td class="price"><input type="number" v-model.number="user.price" @input="onChangeTextField" :disabled="user.fixed" tabindex="2"></td>
-      <td class="fixed"><input :data-id="user.id" type="checkbox" v-model="user.fixed" @click="onClickFixedCheckbox" tabindex="3"></td>
-    </tr>
-  </tbody>
-</table>
+  <table class="table">
+    <thead>
+      <tr class="table_head">
+        <th class="delete">
+          &nbsp;
+        </th>
+        <th class="name">
+          名前
+        </th>
+        <th class="ratio">
+          比率
+        </th>
+        <th class="price">
+          金額
+        </th>
+        <th class="fixed">
+          固定
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="user in users" :key="user.id" class="table_item">
+        <td class="delete">
+          <button :data-id="user.id" type="button" @click="onClickDeleteButton">
+            ❌
+          </button>
+        </td>
+        <td class="name">
+          <input v-model="user.name" type="text" tabindex="1" >
+        </td>
+        <td class="ratio">
+          <input
+            v-model.number="user.ratio"
+            type="number"
+            :disabled="user.fixed"
+            min="0"
+            max="100"
+            step="0.1"
+            @change="onChangeSpinner"
+          >
+        </td>
+        <td class="price">
+          <input
+            v-model.number="user.price"
+            type="number"
+            :disabled="user.fixed"
+            tabindex="2"
+            @input="onChangeTextField"
+          >
+        </td>
+        <td class="fixed">
+          <input
+            v-model="user.fixed"
+            :data-id="user.id"
+            type="checkbox"
+            tabindex="3"
+            @click="onClickFixedCheckbox"
+          >
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </template>
 
 <script>
 export default {
   props: {
     users: {
-      type: Array
-    }
+      type: Array,
+    },
   },
 
   methods: {
     onClickDeleteButton(event) {
-      const id = event.currentTarget.getAttribute('data-id');
+      const id = event.currentTarget.getAttribute('data-id')
 
-      this.$emit('delete', id);
+      this.$emit('delete', id)
     },
 
     onChangeSpinner() {
-      this.$emit('spin');
+      this.$emit('spin')
     },
 
     onChangeTextField() {
-      this.$emit('update');
+      this.$emit('update')
     },
 
     onClickFixedCheckbox(event) {
-      const id = event.currentTarget.getAttribute('data-id');
+      const id = event.currentTarget.getAttribute('data-id')
 
-      this.$emit('toggle', id);
-    }
-  }
+      this.$emit('toggle', id)
+    },
+  },
 }
 </script>
 

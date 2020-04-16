@@ -1,6 +1,6 @@
 <template>
   <div class="calculator">
-    <button type="button" @click="calculate" :disabled="!this.users.length">
+    <button type="button" :disabled="!this.users.length" @click="calculate">
       <span v-show="isSuccess">再</span>計算する
     </button>
   </div>
@@ -10,17 +10,17 @@
 export default {
   props: {
     users: {
-      type: Array
+      type: Array,
     },
     isSuccess: {
-      type: Boolean
+      type: Boolean,
     },
   },
   methods: {
     calculate() {
-      this.$emit('calculate');
-    }
-  }
+      this.$emit('calculate')
+    },
+  },
 }
 </script>
 

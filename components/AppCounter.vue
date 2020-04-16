@@ -1,28 +1,31 @@
 <template>
   <div class="counter">
-    <button type="button" @click="incrementPerson">＋</button>
+    <button type="button" @click="incrementPerson">
+      ＋
+    </button>
     <span>{{ users.length }}人</span>
-    <button type="button" @click="decrementPerson">−</button>
+    <button type="button" @click="decrementPerson">
+      −
+    </button>
   </div>
 </template>
 
 <script>
 export default {
+  props: ['users'],
   data() {
     return {}
   },
 
-  props: ['users'],
-
   methods: {
     incrementPerson() {
-      this.$emit('increment');
+      this.$emit('increment')
     },
 
     decrementPerson() {
-      this.$emit('decrement');
+      this.$emit('decrement')
     },
-  }
+  },
 }
 </script>
 
