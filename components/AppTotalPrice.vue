@@ -18,8 +18,10 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue'
+
+export default Vue.extend({
   props: {
     isSuccess: {
       type: Boolean,
@@ -34,11 +36,11 @@ export default {
     }
   },
   methods: {
-    updateTotalPrice(event) {
+    updateTotalPrice() {
       this.$emit('update', this.totalPrice)
     },
   },
-}
+})
 </script>
 
 <style lang="scss" scoped>

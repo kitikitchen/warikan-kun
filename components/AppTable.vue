@@ -63,8 +63,10 @@
   </table>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue'
+
+export default Vue.extend({
   props: {
     users: {
       type: Array,
@@ -72,9 +74,8 @@ export default {
   },
 
   methods: {
-    onClickDeleteButton(event) {
-      const id = event.currentTarget.getAttribute('data-id')
-
+    onClickDeleteButton({ currentTarget }: { currentTarget: HTMLElement }): void {
+      const id = currentTarget.getAttribute('data-id')
       this.$emit('delete', id)
     },
 
@@ -86,13 +87,12 @@ export default {
       this.$emit('update')
     },
 
-    onClickFixedCheckbox(event) {
-      const id = event.currentTarget.getAttribute('data-id')
-
+    onClickFixedCheckbox({ currentTarget }: { currentTarget: HTMLElement }): void {
+      const id = currentTarget.getAttribute('data-id')
       this.$emit('toggle', id)
     },
   },
-}
+})
 </script>
 
 <style lang="scss" scoped>
