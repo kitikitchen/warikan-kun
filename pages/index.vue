@@ -4,7 +4,7 @@
       <div class="block">
         <AppHeader />
         <p class="lead">
-          金額と人数を入力して<br >計算するボタンを押してください。
+          金額と人数を入力して<br />計算するボタンを押してください。
         </p>
         <AppTotalPrice
           :is-success="isSuccess"
@@ -91,9 +91,11 @@ export default Vue.extend({
     },
 
     splitPrice() {
-      if (this.totalPrice === null) return
+      if (this.totalPrice === null) {
+        return
+      }
 
-      let userAll = this.users.length
+      const userAll = this.users.length
       let totalPrice = this.totalPrice
       let ratios = 0
       let remainder = 0
@@ -115,7 +117,9 @@ export default Vue.extend({
         const isFixed = this.users[i].fixed
 
         if (!isFixed) {
-          this.users[i].price = Math.ceil((totalPrice / ratios) * this.users[i].ratio)
+          this.users[i].price = Math.ceil(
+            (totalPrice / ratios) * this.users[i].ratio
+          )
           remainder += this.users[i].price
         }
       }

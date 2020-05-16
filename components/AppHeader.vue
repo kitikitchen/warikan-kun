@@ -1,7 +1,9 @@
 <template>
   <header class="header">
     <h1 class="title">
-      <img src="@/static/logo.svg" alt=""><span>割り勘<small>くん</small></span>
+      <img src="@/static/logo.svg" alt="" /><span
+        >割り勘<small>くん</small></span
+      >
     </h1>
   </header>
 </template>
@@ -9,8 +11,7 @@
 <script lang="ts">
 import Vue from 'vue'
 
-export default Vue.extend({
-})
+export default Vue.extend({})
 </script>
 
 <style scoped lang="scss">

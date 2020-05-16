@@ -27,7 +27,7 @@
           </button>
         </td>
         <td class="name">
-          <input v-model="user.name" type="text" tabindex="1" >
+          <input v-model="user.name" type="text" tabindex="1" />
         </td>
         <td class="ratio">
           <input
@@ -38,7 +38,7 @@
             max="100"
             step="0.1"
             @change="onChangeSpinner"
-          >
+          />
         </td>
         <td class="price">
           <input
@@ -47,7 +47,7 @@
             :disabled="user.fixed"
             tabindex="2"
             @input="onChangeTextField"
-          >
+          />
         </td>
         <td class="fixed">
           <input
@@ -56,7 +56,7 @@
             type="checkbox"
             tabindex="3"
             @click="onClickFixedCheckbox"
-          >
+          />
         </td>
       </tr>
     </tbody>
@@ -74,7 +74,11 @@ export default Vue.extend({
   },
 
   methods: {
-    onClickDeleteButton({ currentTarget }: { currentTarget: HTMLElement }): void {
+    onClickDeleteButton({
+      currentTarget,
+    }: {
+      currentTarget: HTMLElement
+    }): void {
       const id = currentTarget.getAttribute('data-id')
       this.$emit('delete', id)
     },
@@ -87,7 +91,11 @@ export default Vue.extend({
       this.$emit('update')
     },
 
-    onClickFixedCheckbox({ currentTarget }: { currentTarget: HTMLElement }): void {
+    onClickFixedCheckbox({
+      currentTarget,
+    }: {
+      currentTarget: HTMLElement
+    }): void {
       const id = currentTarget.getAttribute('data-id')
       this.$emit('toggle', id)
     },

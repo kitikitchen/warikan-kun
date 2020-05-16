@@ -9,11 +9,11 @@
           type="number"
           placeholder="¥0"
           @change="updateTotalPrice"
-        >
+        />
       </label>
     </div>
     <div v-if="isSuccess" class="totalprice_remainder">
-      余り<br>¥{{ remainder }}
+      余り<br />¥{{ remainder }}
     </div>
   </div>
 </template>
