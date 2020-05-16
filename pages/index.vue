@@ -44,6 +44,7 @@ import AppCounter from '~/components/AppCounter.vue'
 import AppHeader from '~/components/AppHeader.vue'
 import AppTable from '~/components/AppTable.vue'
 import AppTotalPrice from '~/components/AppTotalPrice.vue'
+import { User } from '~/interfaces/index'
 
 export default Vue.extend({
   components: {
@@ -57,13 +58,7 @@ export default Vue.extend({
     return {
       totalPrice: null as null | number,
       remainder: 0,
-      users: [] as Array<{
-        id: number
-        name: string
-        ratio: number
-        price: number
-        fixed: boolean
-      }>,
+      users: [] as Array<User>,
       id: 0,
       isSuccess: false,
       isError: false,

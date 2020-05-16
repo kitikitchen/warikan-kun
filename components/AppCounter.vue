@@ -11,12 +11,14 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue, { PropOptions } from 'vue'
+import { User } from '~/interfaces/index'
 
 export default Vue.extend({
-  props: ['users'],
-  data() {
-    return {}
+  props: {
+    users: {
+      type: Array
+    } as PropOptions<User[]>
   },
 
   methods: {
