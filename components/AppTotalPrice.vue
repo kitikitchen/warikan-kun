@@ -19,28 +19,26 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import { Vue, Component, Prop } from 'vue-property-decorator'
 
-export default Vue.extend({
-  props: {
-    isSuccess: {
-      type: Boolean,
-    },
-    remainder: {
-      type: Number,
-    },
-  },
-  data() {
-    return {
-      totalPrice: null,
-    }
-  },
-  methods: {
-    updateTotalPrice() {
-      this.$emit('update', this.totalPrice)
-    },
-  },
-})
+@Component
+export default class AppTotalPrice extends Vue {
+  @Prop({
+    type: Boolean
+  })
+  isSuccess!: boolean
+
+  @Prop({
+    type: Number
+  })
+  remainder!: number
+
+  totalPrice: number | null = null
+
+  updateTotalPrice() {
+    this.$emit('update', this.totalPrice)
+  }
+}
 </script>
 
 <style lang="scss" scoped>

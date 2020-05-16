@@ -7,24 +7,25 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropOptions } from 'vue'
+import { Vue, Component, Prop } from 'vue-property-decorator'
 import { User } from '~/interfaces/index'
 
-export default Vue.extend({
-  props: {
-    users: {
-      type: Array,
-    } as PropOptions<User[]>,
-    isSuccess: {
-      type: Boolean,
-    },
-  },
-  methods: {
-    calculate() {
-      this.$emit('calculate')
-    },
-  },
-})
+@Component
+export default class AppCalculator extends Vue {
+  @Prop({
+    type: Array,
+  })
+  users!: User[]
+
+  @Prop({
+    type: Boolean,
+  })
+  isSuccess!: boolean
+
+  calculate() {
+    this.$emit('calculate')
+  }
+}
 </script>
 
 <style lang="scss" scoped>

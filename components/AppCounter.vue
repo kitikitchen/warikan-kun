@@ -11,26 +11,24 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropOptions } from 'vue'
+import { Vue, Component, Prop } from 'vue-property-decorator'
 import { User } from '~/interfaces/index'
 
-export default Vue.extend({
-  props: {
-    users: {
-      type: Array
-    } as PropOptions<User[]>
-  },
+@Component
+export default class AppCounter extends Vue {
+  @Prop({
+    type: Array
+  })
+  users!: User[]
 
-  methods: {
-    incrementPerson() {
-      this.$emit('increment')
-    },
+  incrementPerson() {
+    this.$emit('increment')
+  }
 
-    decrementPerson() {
-      this.$emit('decrement')
-    },
-  },
-})
+  decrementPerson() {
+    this.$emit('decrement')
+  }
+}
 </script>
 
 <style lang="scss" scoped>

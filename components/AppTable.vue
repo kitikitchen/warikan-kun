@@ -64,44 +64,42 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropOptions } from 'vue'
+import { Vue, Component, Prop } from 'vue-property-decorator'
 import { User } from '~/interfaces/index'
 
-export default Vue.extend({
-  props: {
-    users: {
-      type: Array,
-    } as PropOptions<User[]>,
-  },
+@Component
+export default class AppTable extends Vue {
+  @Prop({
+    type: Array
+  })
+  users!: User[]
 
-  methods: {
-    onClickDeleteButton({
-      currentTarget,
-    }: {
-      currentTarget: HTMLElement
-    }): void {
-      const id = currentTarget.getAttribute('data-id')
-      this.$emit('delete', id)
-    },
+  onClickDeleteButton({
+    currentTarget,
+  }: {
+    currentTarget: HTMLElement
+  }): void {
+    const id = currentTarget.getAttribute('data-id')
+    this.$emit('delete', id)
+  }
 
-    onChangeSpinner() {
-      this.$emit('spin')
-    },
+  onChangeSpinner() {
+    this.$emit('spin')
+  }
 
-    onChangeTextField() {
-      this.$emit('update')
-    },
+  onChangeTextField() {
+    this.$emit('update')
+  }
 
-    onClickFixedCheckbox({
-      currentTarget,
-    }: {
-      currentTarget: HTMLElement
-    }): void {
-      const id = currentTarget.getAttribute('data-id')
-      this.$emit('toggle', id)
-    },
-  },
-})
+  onClickFixedCheckbox({
+    currentTarget,
+  }: {
+    currentTarget: HTMLElement
+  }): void {
+    const id = currentTarget.getAttribute('data-id')
+    this.$emit('toggle', id)
+  }
+}
 </script>
 
 <style lang="scss" scoped>

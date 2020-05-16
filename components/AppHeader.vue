@@ -9,9 +9,9 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import { Vue, Component, Prop } from 'vue-property-decorator'
 
-export default Vue.extend({})
+export default class AppHeader extends Vue {}
 </script>
 
 <style scoped lang="scss">
