@@ -4,13 +4,11 @@ module.exports = {
     browser: true,
     node: true
   },
-  parserOptions: {
-    parser: 'babel-eslint'
-  },
   extends: [
+    '@nuxtjs/eslint-config-typescript',
     'eslint:recommended',
     'plugin:vue/recommended',
-    'plugin:prettier/recommended'
+    'plugin:prettier/recommended',
   ],
   plugins: [
     'vue'
@@ -20,6 +18,11 @@ module.exports = {
     'quotes': ['error', 'single'],
     'no-console': 'off',
     'vue/max-attributes-per-line': 'off',
+    'vue/html-self-closing': ['error', {
+      'html': {
+        'void': 'always'
+      }
+    }],
     'prettier/prettier': ['error', {
       'semi': false,
       'singleQuote': true,
