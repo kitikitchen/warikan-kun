@@ -6,6 +6,13 @@
   </header>
 </template>
 
+<script lang="ts">
+import Vue from 'vue'
+
+export default Vue.extend({
+})
+</script>
+
 <style scoped lang="scss">
 .header {
   padding: 100px vw(40) 40px;

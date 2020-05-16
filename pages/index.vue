@@ -37,14 +37,15 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import AppCalculator from '~/components/AppCalculator.vue'
 import AppCounter from '~/components/AppCounter.vue'
 import AppHeader from '~/components/AppHeader.vue'
 import AppTable from '~/components/AppTable.vue'
 import AppTotalPrice from '~/components/AppTotalPrice.vue'
 
-export default {
+export default Vue.extend({
   components: {
     AppCalculator,
     AppCounter,
@@ -54,9 +55,15 @@ export default {
   },
   data() {
     return {
-      totalPrice: null,
+      totalPrice: null as null | number,
       remainder: 0,
-      users: [],
+      users: [] as Array<{
+        id: number
+        name: string
+        ratio: number
+        price: number
+        fixed: boolean
+      }>,
       id: 0,
       isSuccess: false,
       isError: false,
@@ -64,7 +71,7 @@ export default {
   },
 
   computed: {
-    containerClasses() {
+    containerClasses(): {} {
       return {
         'is-success': this.isSuccess,
         'is-error': this.isError,
@@ -84,6 +91,8 @@ export default {
     },
 
     splitPrice() {
+      if (this.totalPrice === null) return
+
       let userAll = this.users.length
       let totalPrice = this.totalPrice
       let ratios = 0
@@ -106,10 +115,7 @@ export default {
         const isFixed = this.users[i].fixed
 
         if (!isFixed) {
-          this.users[i].price = parseInt(
-            Math.ceil((totalPrice / ratios) * this.users[i].ratio),
-            10
-          )
+          this.users[i].price = Math.ceil((totalPrice / ratios) * this.users[i].ratio)
           remainder += this.users[i].price
         }
       }
@@ -117,7 +123,7 @@ export default {
       this.remainder = remainder - totalPrice
     },
 
-    onUpdateTotalPrice(totalPrice) {
+    onUpdateTotalPrice(totalPrice: number) {
       this.totalPrice = totalPrice
     },
 
@@ -136,7 +142,7 @@ export default {
         id: this.id++,
         name: `${this.id}さん`,
         ratio: 1,
-        price: null,
+        price: 0,
         fixed: false,
       }
       this.users = [...this.users, newUser]
@@ -144,7 +150,7 @@ export default {
 
     destroyUser() {
       const length = this.users.length
-      this.users.shift(length)
+      this.users.shift()
 
       if (!this.users.length) {
         this.isSuccess = false
@@ -152,12 +158,12 @@ export default {
       }
     },
 
-    doDeleteUser(id) {
+    doDeleteUser(id: number) {
       this.validate()
       this.removeUser(id)
     },
 
-    removeUser(id) {
+    removeUser(id: number) {
       const users = this.users
       const index = users.findIndex((user) => {
         return user.id == id
@@ -165,14 +171,14 @@ export default {
       users.splice(index, 1)
     },
 
-    toggleFixed(id) {
+    toggleFixed(id: number) {
       const users = this.users
       const index = users.findIndex((item) => {
         return item.id === id
       })
     },
   },
-}
+})
 </script>
 
 <style lang="scss" scoped>
