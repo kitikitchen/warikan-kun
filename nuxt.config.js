@@ -43,6 +43,8 @@ export default {
    */
   modules: ['@nuxtjs/style-resources', '@nuxtjs/pwa'],
 
+  buildModules: ['@nuxt/typescript-build'],
+
   styleResources: {
     scss: [
       '~/assets/scss/_setting.scss',

@@ -27,7 +27,7 @@
           </button>
         </td>
         <td class="name">
-          <input v-model="user.name" type="text" tabindex="1" >
+          <input v-model="user.name" type="text" tabindex="1" />
         </td>
         <td class="ratio">
           <input
@@ -38,7 +38,7 @@
             max="100"
             step="0.1"
             @change="onChangeSpinner"
-          >
+          />
         </td>
         <td class="price">
           <input
@@ -47,7 +47,7 @@
             :disabled="user.fixed"
             tabindex="2"
             @input="onChangeTextField"
-          >
+          />
         </td>
         <td class="fixed">
           <input
@@ -56,42 +56,49 @@
             type="checkbox"
             tabindex="3"
             @click="onClickFixedCheckbox"
-          >
+          />
         </td>
       </tr>
     </tbody>
   </table>
 </template>
 
-<script>
-export default {
-  props: {
-    users: {
-      type: Array,
-    },
-  },
+<script lang="ts">
+import { Vue, Component, Prop } from 'vue-property-decorator'
+import { User } from '~/interfaces/index'
 
-  methods: {
-    onClickDeleteButton(event) {
-      const id = event.currentTarget.getAttribute('data-id')
+@Component
+export default class AppTable extends Vue {
+  @Prop({
+    type: Array
+  })
+  users!: User[]
 
-      this.$emit('delete', id)
-    },
+  onClickDeleteButton({
+    currentTarget,
+  }: {
+    currentTarget: HTMLElement
+  }): void {
+    const id = currentTarget.getAttribute('data-id')
+    this.$emit('delete', id)
+  }
 
-    onChangeSpinner() {
-      this.$emit('spin')
-    },
+  onChangeSpinner() {
+    this.$emit('spin')
+  }
 
-    onChangeTextField() {
-      this.$emit('update')
-    },
+  onChangeTextField() {
+    this.$emit('update')
+  }
 
-    onClickFixedCheckbox(event) {
-      const id = event.currentTarget.getAttribute('data-id')
-
-      this.$emit('toggle', id)
-    },
-  },
+  onClickFixedCheckbox({
+    currentTarget,
+  }: {
+    currentTarget: HTMLElement
+  }): void {
+    const id = currentTarget.getAttribute('data-id')
+    this.$emit('toggle', id)
+  }
 }
 </script>
 

@@ -1,10 +1,18 @@
 <template>
   <header class="header">
     <h1 class="title">
-      <img src="@/static/logo.svg" alt=""><span>割り勘<small>くん</small></span>
+      <img src="@/static/logo.svg" alt="" /><span
+        >割り勘<small>くん</small></span
+      >
     </h1>
   </header>
 </template>
+
+<script lang="ts">
+import { Vue, Component, Prop } from 'vue-property-decorator'
+
+export default class AppHeader extends Vue {}
+</script>
 
 <style scoped lang="scss">
 .header {

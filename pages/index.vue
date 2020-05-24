@@ -4,7 +4,7 @@
       <div class="block">
         <AppHeader />
         <p class="lead">
-          金額と人数を入力して<br >計算するボタンを押してください。
+          金額と人数を入力して<br />計算するボタンを押してください。
         </p>
         <AppTotalPrice
           :is-success="isSuccess"
@@ -37,141 +37,141 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { Vue, Component, Prop } from 'vue-property-decorator'
 import AppCalculator from '~/components/AppCalculator.vue'
 import AppCounter from '~/components/AppCounter.vue'
 import AppHeader from '~/components/AppHeader.vue'
 import AppTable from '~/components/AppTable.vue'
 import AppTotalPrice from '~/components/AppTotalPrice.vue'
+import { User } from '~/interfaces/index'
 
-export default {
+@Component({
   components: {
     AppCalculator,
     AppCounter,
     AppHeader,
     AppTable,
     AppTotalPrice,
-  },
-  data() {
-    return {
-      totalPrice: null,
-      remainder: 0,
-      users: [],
-      id: 0,
-      isSuccess: false,
-      isError: false,
-    }
-  },
+  }
+})
+export default class Index extends Vue {
+  totalPrice: null | number = null
+  remainder = 0
+  users: Array<User> = []
+  id = 0
+  isSuccess = false
+  isError = false
 
-  computed: {
-    containerClasses() {
-      return {
-        'is-success': this.isSuccess,
-        'is-error': this.isError,
-      }
-    },
-  },
+  get containerClasses(): {} {
+    return {
+      'is-success': this.isSuccess,
+      'is-error': this.isError
+    }
+  }
 
   created() {
     this.createUser()
-  },
+  }
 
-  methods: {
-    validate() {
-      if (this.isSuccess) {
-        this.isError = true
+  validate() {
+    if (this.isSuccess) {
+      this.isError = true
+    }
+  }
+
+  splitPrice() {
+    if (this.totalPrice === null) {
+      return
+    }
+
+    const userAll = this.users.length
+    let totalPrice = this.totalPrice
+    let ratios = 0
+    let remainder = 0
+
+    this.isSuccess = true
+    this.isError = false
+
+    for (let i = 0; i < userAll; i++) {
+      const isFixed = this.users[i].fixed
+
+      if (isFixed) {
+        totalPrice -= this.users[i].price
+      } else {
+        ratios += this.users[i].ratio
       }
-    },
+    }
 
-    splitPrice() {
-      let userAll = this.users.length
-      let totalPrice = this.totalPrice
-      let ratios = 0
-      let remainder = 0
+    for (let i = 0; i < userAll; i++) {
+      const isFixed = this.users[i].fixed
 
-      this.isSuccess = true
+      if (!isFixed) {
+        this.users[i].price = Math.ceil(
+          (totalPrice / ratios) * this.users[i].ratio
+        )
+        remainder += this.users[i].price
+      }
+    }
+
+    this.remainder = remainder - totalPrice
+  }
+
+  onUpdateTotalPrice(totalPrice: number) {
+    this.totalPrice = totalPrice
+  }
+
+  onIncrementUser() {
+    this.validate()
+    this.createUser()
+  }
+
+  onDecrementUser() {
+    this.destroyUser()
+    this.validate()
+  }
+
+  createUser() {
+    const newUser = {
+      id: this.id++,
+      name: `${this.id}さん`,
+      ratio: 1,
+      price: 0,
+      fixed: false,
+    }
+    this.users = [...this.users, newUser]
+  }
+
+  destroyUser() {
+    const length = this.users.length
+    this.users.shift()
+
+    if (!this.users.length) {
+      this.isSuccess = false
       this.isError = false
+    }
+  }
 
-      for (let i = 0; i < userAll; i++) {
-        const isFixed = this.users[i].fixed
+  doDeleteUser(id: number) {
+    this.validate()
+    this.removeUser(id)
+  }
 
-        if (isFixed) {
-          totalPrice -= this.users[i].price
-        } else {
-          ratios += this.users[i].ratio
-        }
-      }
+  removeUser(id: number) {
+    const users = this.users
+    const index = users.findIndex((user) => {
+      return user.id == id
+    })
+    users.splice(index, 1)
+  }
 
-      for (let i = 0; i < userAll; i++) {
-        const isFixed = this.users[i].fixed
 
-        if (!isFixed) {
-          this.users[i].price = parseInt(
-            Math.ceil((totalPrice / ratios) * this.users[i].ratio),
-            10
-          )
-          remainder += this.users[i].price
-        }
-      }
-
-      this.remainder = remainder - totalPrice
-    },
-
-    onUpdateTotalPrice(totalPrice) {
-      this.totalPrice = totalPrice
-    },
-
-    onIncrementUser() {
-      this.validate()
-      this.createUser()
-    },
-
-    onDecrementUser() {
-      this.destroyUser()
-      this.validate()
-    },
-
-    createUser() {
-      const newUser = {
-        id: this.id++,
-        name: `${this.id}さん`,
-        ratio: 1,
-        price: null,
-        fixed: false,
-      }
-      this.users = [...this.users, newUser]
-    },
-
-    destroyUser() {
-      const length = this.users.length
-      this.users.shift(length)
-
-      if (!this.users.length) {
-        this.isSuccess = false
-        this.isError = false
-      }
-    },
-
-    doDeleteUser(id) {
-      this.validate()
-      this.removeUser(id)
-    },
-
-    removeUser(id) {
-      const users = this.users
-      const index = users.findIndex((user) => {
-        return user.id == id
-      })
-      users.splice(index, 1)
-    },
-
-    toggleFixed(id) {
-      const users = this.users
-      const index = users.findIndex((item) => {
-        return item.id === id
-      })
-    },
-  },
+  toggleFixed(id: number) {
+    const users = this.users
+    const index = users.findIndex((item) => {
+      return item.id === id
+    })
+  }
 }
 </script>
 

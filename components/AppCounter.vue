@@ -10,22 +10,24 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: ['users'],
-  data() {
-    return {}
-  },
+<script lang="ts">
+import { Vue, Component, Prop } from 'vue-property-decorator'
+import { User } from '~/interfaces/index'
 
-  methods: {
-    incrementPerson() {
-      this.$emit('increment')
-    },
+@Component
+export default class AppCounter extends Vue {
+  @Prop({
+    type: Array
+  })
+  users!: User[]
 
-    decrementPerson() {
-      this.$emit('decrement')
-    },
-  },
+  incrementPerson() {
+    this.$emit('increment')
+  }
+
+  decrementPerson() {
+    this.$emit('decrement')
+  }
 }
 </script>
 

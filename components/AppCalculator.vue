@@ -6,21 +6,25 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    users: {
-      type: Array,
-    },
-    isSuccess: {
-      type: Boolean,
-    },
-  },
-  methods: {
-    calculate() {
-      this.$emit('calculate')
-    },
-  },
+<script lang="ts">
+import { Vue, Component, Prop } from 'vue-property-decorator'
+import { User } from '~/interfaces/index'
+
+@Component
+export default class AppCalculator extends Vue {
+  @Prop({
+    type: Array,
+  })
+  users!: User[]
+
+  @Prop({
+    type: Boolean,
+  })
+  isSuccess!: boolean
+
+  calculate() {
+    this.$emit('calculate')
+  }
 }
 </script>
 

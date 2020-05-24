@@ -9,35 +9,35 @@
           type="number"
           placeholder="¥0"
           @change="updateTotalPrice"
-        >
+        />
       </label>
     </div>
     <div v-if="isSuccess" class="totalprice_remainder">
-      余り<br>¥{{ remainder }}
+      余り<br />¥{{ remainder }}
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    isSuccess: {
-      type: Boolean,
-    },
-    remainder: {
-      type: Number,
-    },
-  },
-  data() {
-    return {
-      totalPrice: null,
-    }
-  },
-  methods: {
-    updateTotalPrice(event) {
-      this.$emit('update', this.totalPrice)
-    },
-  },
+<script lang="ts">
+import { Vue, Component, Prop } from 'vue-property-decorator'
+
+@Component
+export default class AppTotalPrice extends Vue {
+  @Prop({
+    type: Boolean
+  })
+  isSuccess!: boolean
+
+  @Prop({
+    type: Number
+  })
+  remainder!: number
+
+  totalPrice: number | null = null
+
+  updateTotalPrice() {
+    this.$emit('update', this.totalPrice)
+  }
 }
 </script>
 
