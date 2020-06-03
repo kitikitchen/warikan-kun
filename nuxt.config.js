@@ -3,78 +3,70 @@ import pkg from './package'
 export default {
   mode: 'spa',
 
-  /*
-  ** Headers of the page
-  */
-  head: {
-    title: pkg.name,
-    meta: [
-      { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: pkg.description }
-    ],
-    link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
-    ]
+  server: {
+    host: '0.0.0.0',
   },
 
   /*
-  ** Customize the progress-bar color
-  */
+   ** Headers of the page
+   */
+  head: {
+    title: pkg.displayName,
+    meta: [
+      { charset: 'utf-8' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { hid: 'description', name: 'description', content: pkg.description },
+    ],
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+  },
+
+  /*
+   ** Customize the progress-bar color
+   */
   loading: { color: '#fff' },
 
   /*
-  ** Global CSS
-  */
+   ** Global CSS
+   */
   css: [
+    { src: '~/assets/scss/_reset.scss', lang: 'scss' },
+    { src: '~/assets/scss/_base.scss', lang: 'scss' },
   ],
 
   /*
-  ** Plugins to load before mounting the App
-  */
-  plugins: [
-  ],
+   ** Plugins to load before mounting the App
+   */
+  plugins: [],
 
   /*
-  ** Nuxt.js modules
-  */
-  modules: [
-    // '@nuxtjs/vuetify'
-    '@nuxtjs/style-resources',
-  ],
+   ** Nuxt.js modules
+   */
+  modules: ['@nuxtjs/style-resources', '@nuxtjs/pwa'],
+
+  buildModules: ['@nuxt/typescript-build'],
 
   styleResources: {
     scss: [
       '~/assets/scss/_setting.scss',
       '~/assets/scss/_function.scss',
       '~/assets/scss/_mixin.scss',
-
-    ]
+    ],
   },
 
-  css: [
-    { src: '~/assets/scss/_reset.scss', lang: 'scss' },
-    { src: '~/assets/scss/_base.scss', lang: 'scss' }
-  ],
-
-  // vuetify: {
-  //   // Vuetify の設定はここに書く
-  //   theme: {
-  //     primary: '#3f51b5',
-  //     secondary: '#b0bec5',
-  //     accent: '#8c9eff',
-  //     error: '#b71c1c'
-  //   }
-  // },
-
   /*
-  ** Build configuration
-  */
+   ** Build configuration
+   */
   build: {
     /*
-    ** You can extend webpack config here
-    */
-    extend(config, ctx) {
-    }
-  }
+     ** You can extend webpack config here
+     */
+  },
+
+  pwa: {
+    manifest: {
+      name: pkg.displayName,
+      short_name: pkg.displayName,
+      lang: 'ja',
+    },
+  },
 }

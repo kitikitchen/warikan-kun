@@ -1,22 +1,11 @@
-# warikan-kun
+<p align="center">
+  <img src="https://github.com/toshifumiimanishi/warikan-kun/blob/master/static/logo.svg" alt="割り勘くん logo" width="72" height="72">
+</p>
 
-> My impressive Nuxt.js project
+<h3 align="center">割り勘くん</h3>
 
-## Build Setup
+<p align="center">金額と人数を入力して、同等割の金額を計算するアプリケーションです。</p>
 
-``` bash
-# install dependencies
-$ yarn install
-
-# serve with hot reload at localhost:3000
-$ yarn run dev
-
-# build for production and launch server
-$ yarn run build
-$ yarn start
-
-# generate static project
-$ yarn run generate
-```
-
-For detailed explanation on how things work, checkout [Nuxt.js docs](https://nuxtjs.org).
+<p align="center">
+  <a href="https://warikan-kun.firebaseapp.com/"><strong>Play 割り勘くん »</strong></a>
+</p>

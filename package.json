@@ -1,25 +1,40 @@
 {
   "name": "warikan-kun",
+  "displayName": "割り勘くん",
   "version": "1.0.0",
-  "description": "My impressive Nuxt.js project",
+  "description": "金額と人数を入力して、同等割の金額を計算するアプリケーションです。",
   "author": "Yoshihara Fumio",
   "private": true,
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
-    "generate": "nuxt generate"
+    "generate": "nuxt generate",
+    "deploy": "firebase deploy",
+    "lint": "eslint --ext .ts,.js,.vue --ignore-path .gitignore .",
+    "format": "eslint --fix --ext .ts,.js,.vue --ignore-path .gitignore ."
   },
   "dependencies": {
+    "@nuxtjs/pwa": "^3.0.0-beta.20",
     "@nuxtjs/style-resources": "^1.0.0",
     "@nuxtjs/vuetify": "^1.9.0",
     "cross-env": "^5.2.0",
+    "firebase-tools": "^7.14.0",
     "node-sass": "^4.13.0",
     "nuxt": "^2.4.0",
     "sass-loader": "^8.0.0",
-    "style-loader": "^1.0.0"
+    "style-loader": "^1.0.0",
+    "vue-property-decorator": "^8.4.2"
   },
   "devDependencies": {
-    "nodemon": "^1.18.9"
+    "@nuxt/typescript-build": "^0.6.6",
+    "@nuxtjs/eslint-config-typescript": "^2.0.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-loader": "^4.0.0",
+    "eslint-plugin-prettier": "^3.1.3",
+    "eslint-plugin-vue": "^6.2.2",
+    "nodemon": "^1.18.9",
+    "prettier": "^2.0.4"
   }
 }
